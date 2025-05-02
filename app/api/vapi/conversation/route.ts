@@ -3,34 +3,35 @@ import { google } from "@ai-sdk/google";
 import { db } from "@/firebase/admin";
 
 export async function POST(request: Request) {
-  const { topic, difficulty, context, focus, amount, userid } =
+  const { topic, difficulty, context, focus, amount, userid, username } =
     await request.json();
 
   try {
     const { text: questions } = await generateText({
-      model: google("gemini-2.0-flash-001"),
-      prompt: `Generate very simple English practice questions for beginners from developing countries.
-        Topic: ${topic}.
-        Difficulty: ${difficulty} (keep vocabulary extremely basic).
-        Context: ${context}.
-        Focus area: ${focus}.
-        Number of questions: ${amount}.
+      model: google("gemma-3-27b-it"),
+      prompt: `
+      Prepare questions for an English conversation session.
+      The topic is: ${topic}.
+      The user's English level is: ${difficulty}.
+      The context for this session is: ${context}.
+      The focus area is: ${focus}.
+      The number of questions required is: ${amount}.
+      The user's name is: ${username}.
 
-        Important Rules:
-        1. Use only simplest English words (A1/A2 level)
-        2. Make sentences short (max 5-6 words)
-        3. Focus on daily life topics
-        4. Avoid any complex cultural references
-        5. Use present simple tense mostly
-        6. No idioms or phrasal verbs
-        7. Format exactly like this example: 
-           ["What is your name?", "Do you like tea?", "Where do you live?"]
-        8. Absolutely no special characters (/, *, etc.)
+      Please return only the questions, without any additional text.
+      The questions are going to be read by a voice assistant, so do not use "/", "*" or any other special characters which might break the voice assistant.
+      Keep the language clear, simple, and friendly — but not overly basic. Use natural vocabulary between A2 and B2 level.
+      Make the questions open-ended to encourage thoughtful speaking, and occasionally use the user's name (${username}) in 1 or 2 questions.
 
-        Example outputs for 'food' topic:
-        ["What food do you like?", "Do you cook at home?", "What is your favorite fruit?"]
+      Return the questions formatted like this:
+      ["Question 1", "Question 2", "Question 3"]
+
+      Thank you! <3
+      
       `,
     });
+
+    console.log(questions);
 
     const conversation = {
       topic: topic,
@@ -45,17 +46,7 @@ export async function POST(request: Request) {
       createdAt: new Date().toISOString(),
     };
 
-    // const interview = {
-    //       role: role,
-    //       type: type,
-    //       level: level,
-    //       techstack: techstack.split(","),
-    //       questions: JSON.parse(questions),
-    //       userId: userid,
-    //       finalized: true,
-    //       coverImage: getRandomInterviewCover(),
-    //       createdAt: new Date().toISOString(),
-    //     };
+    console.log(conversation);
 
     await db.collection("conversations").add(conversation);
 

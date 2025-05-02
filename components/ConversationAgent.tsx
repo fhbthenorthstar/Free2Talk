@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
-import { interviewer } from "@/constants";
+import { createConversationAgent } from "@/constants";
 import { createFeedback } from "@/lib/actions/conversation.actions";
 
 enum CallStatus {
@@ -27,7 +27,11 @@ const ConversationAgent = ({
   conversationId,
   feedbackId,
   type,
-  questions,
+  starters,
+  topic,
+  difficulty,
+  context,
+  focus,
 }: ConversationAgentProps) => {
   const router = useRouter();
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -126,15 +130,31 @@ const ConversationAgent = ({
       });
     } else {
       let formattedQuestions = "";
-      if (questions) {
-        formattedQuestions = questions
+
+      if (starters) {
+        formattedQuestions = starters
+          .filter((q) => q && !q.toLowerCase().includes("undefined"))
           .map((question) => `- ${question}`)
           .join("\n");
       }
 
-      await vapi.start(interviewer, {
+      console.log({
+        starters: formattedQuestions,
+        topic,
+        difficulty,
+        context,
+        focus,
+        userName,
+      });
+
+      await vapi.start(createConversationAgent, {
         variableValues: {
-          questions: formattedQuestions,
+          starters: formattedQuestions,
+          topic,
+          difficulty,
+          context,
+          focus,
+          userName,
         },
       });
     }

@@ -6,32 +6,35 @@ import InterviewCard from "@/components/InterviewCard";
 
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
-  getInterviewsByUserId,
-  getLatestInterviews,
-} from "@/lib/actions/general.action";
+  getConversationsByUserId,
+  getLatestConversations,
+} from "@/lib/actions/conversation.actions";
+import ConversationCard from "@/components/ConversationCard";
 
 async function Home() {
   const user = await getCurrentUser();
 
-  const [userInterviews, allInterview] = await Promise.all([
-    getInterviewsByUserId(user?.id!),
-    getLatestInterviews({ userId: user?.id! }),
+  const [userConversations, allConversation] = await Promise.all([
+    getConversationsByUserId(user?.id!),
+    getLatestConversations({ userId: user?.id! }),
   ]);
 
-  const hasPastInterviews = userInterviews?.length! > 0;
-  const hasUpcomingInterviews = allInterview?.length! > 0;
+  const hasPastConversations = userConversations?.length! > 0;
+  const hasUpcomingConversation = allConversation?.length! > 0;
 
   return (
     <>
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
-          <h2>Get Interview-Ready with AI-Powered Practice & Feedback</h2>
+          <h2>
+            Speak English Better - Free Practice & Feedback Sessions with AI
+          </h2>
           <p className="text-lg">
-            Practice real interview questions & get instant feedback
+            Talk about daily life topics and improve your english.
           </p>
 
           <Button asChild className="btn-primary max-sm:w-full">
-            <Link href="/interview">Start an Interview</Link>
+            <Link href="/conversation">Create Practise Sessions</Link>
           </Button>
         </div>
 
@@ -45,45 +48,46 @@ async function Home() {
       </section>
 
       <section className="flex flex-col gap-6 mt-8">
-        <h2>Your Interviews</h2>
-
-        <div className="interviews-section">
-          {hasPastInterviews ? (
-            userInterviews?.map((interview) => (
-              <InterviewCard
-                key={interview.id}
+        <h2>Your Practice Sessions</h2>
+        <div className="conversations-section">
+          {hasPastConversations ? (
+            userConversations?.map((conversation) => (
+              <ConversationCard
+                key={conversation.id}
                 userId={user?.id}
-                interviewId={interview.id}
-                role={interview.role}
-                type={interview.type}
-                techstack={interview.techstack}
-                createdAt={interview.createdAt}
+                conversationId={conversation.id}
+                topic={conversation.topic}
+                difficulty={conversation.difficulty}
+                context={conversation.context}
+                starters={conversation.starters}
+                createdAt={conversation.createdAt}
               />
             ))
           ) : (
-            <p>You haven&apos;t taken any interviews yet</p>
+            <p>Get started now. You haven't generated any practice session.</p>
           )}
         </div>
       </section>
 
       <section className="flex flex-col gap-6 mt-8">
-        <h2>Take Interviews</h2>
+        <h3>Others Sessions You Can Take</h3>
 
         <div className="interviews-section">
-          {hasUpcomingInterviews ? (
-            allInterview?.map((interview) => (
-              <InterviewCard
-                key={interview.id}
+          {hasUpcomingConversation ? (
+            allConversation?.map((conversation) => (
+              <ConversationCard
+                key={conversation.id}
                 userId={user?.id}
-                interviewId={interview.id}
-                role={interview.role}
-                type={interview.type}
-                techstack={interview.techstack}
-                createdAt={interview.createdAt}
+                conversationId={conversation.id}
+                topic={conversation.topic}
+                difficulty={conversation.difficulty}
+                context={conversation.context}
+                starters={conversation.starters}
+                createdAt={conversation.createdAt}
               />
             ))
           ) : (
-            <p>There are no interviews available</p>
+            <p>There are no practice session available at this moment</p>
           )}
         </div>
       </section>

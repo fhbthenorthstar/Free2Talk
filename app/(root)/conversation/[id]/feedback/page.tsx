@@ -4,9 +4,9 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import {
-  getFeedbackByInterviewId,
-  getInterviewById,
-} from "@/lib/actions/general.action";
+  getFeedbackByConversationId,
+  getConversationById,
+} from "@/lib/actions/conversation.actions";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 
@@ -14,11 +14,11 @@ const Feedback = async ({ params }: RouteParams) => {
   const { id } = await params;
   const user = await getCurrentUser();
 
-  const interview = await getInterviewById(id);
-  if (!interview) redirect("/");
+  const conversation = await getConversationById(id);
+  if (!conversation) redirect("/");
 
-  const feedback = await getFeedbackByInterviewId({
-    interviewId: id,
+  const feedback = await getFeedbackByConversationId({
+    conversationId: id,
     userId: user?.id!,
   });
 
@@ -26,8 +26,9 @@ const Feedback = async ({ params }: RouteParams) => {
     <section className="section-feedback">
       <div className="flex flex-row justify-center">
         <h1 className="text-4xl font-semibold">
-          Feedback on the Interview -{" "}
-          <span className="capitalize">{interview.role}</span> Interview
+          Feedback on the conversation -{" "}
+          <span className="capitalize">{conversation.difficulty}</span>{" "}
+          conversation
         </h1>
       </div>
 
@@ -61,9 +62,9 @@ const Feedback = async ({ params }: RouteParams) => {
 
       <p>{feedback?.finalAssessment}</p>
 
-      {/* Interview Breakdown */}
+      {/* conversation Breakdown */}
       <div className="flex flex-col gap-4">
-        <h2>Breakdown of the Interview:</h2>
+        <h2>Breakdown of the conversation:</h2>
         {feedback?.categoryScores?.map((category, index) => (
           <div key={index}>
             <p className="font-bold">
@@ -103,7 +104,7 @@ const Feedback = async ({ params }: RouteParams) => {
 
         <Button className="btn-primary flex-1">
           <Link
-            href={`/interview/${id}`}
+            href={`/conversation/${id}`}
             className="flex w-full justify-center"
           >
             <p className="text-sm font-semibold text-black text-center">
