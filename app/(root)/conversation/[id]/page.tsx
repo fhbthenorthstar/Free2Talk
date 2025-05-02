@@ -34,12 +34,15 @@ const ConversationDetails = async ({ params }: RouteParams) => {
               height={40}
               className="rounded-full object-cover size-[40px]"
             />
-            <h3 className="capitalize">Focued on {conversation.focus}</h3>
+            <h3 className="capitalize">{conversation.topic} Session</h3>
           </div>
+          <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit capitalize">
+            {conversation.focus}
+          </p>
         </div>
 
-        <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit capitalize">
-          {conversation.difficulty} English Level
+        <p className="bg-indigo-500 px-4 py-2 rounded-lg h-fit capitalize">
+          <strong>{conversation.difficulty}</strong>
         </p>
       </div>
 

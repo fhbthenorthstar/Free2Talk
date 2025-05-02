@@ -13,7 +13,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="root-layout">
-      <nav className="flex items-center justify-between px-4 py-2 shadow">
+      <nav className="flex items-center justify-between py-2 shadow">
         {/* Left side: Logo and name */}
         <Link href="/" className="flex items-center gap-2">
           <Image
