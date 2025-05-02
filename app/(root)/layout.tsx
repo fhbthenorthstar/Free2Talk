@@ -3,10 +3,12 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
-import { isAuthenticated } from "@/lib/actions/auth.action";
+import { isAuthenticated, getCurrentUser } from "@/lib/actions/auth.action";
+import LogOut from "@/components/LogOut";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const isUserAuthenticated = await isAuthenticated();
+  const user = await getCurrentUser();
   if (!isUserAuthenticated) redirect("/sign-in");
 
   return (
@@ -22,13 +24,8 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           />
           <h3 className="text-primary">Free2Talk</h3>
         </Link>
-
-        {/* Right side: User name and Logout */}
-        <div className="flex items-center gap-4">
-          <span className="text-gray-700">Hi, John</span>{" "}
-          {/* Replace "John" dynamically */}
-          <button className="text-red-500 hover:underline">Logout</button>
-        </div>
+        {/* @ts-ignore */}
+        <LogOut userName={user?.name} />
       </nav>
 
       {children}

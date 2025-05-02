@@ -49,7 +49,7 @@ async function Home() {
 
       <section className="flex flex-col gap-6 mt-8">
         <h2>Your Practice Sessions</h2>
-        <div className="conversations-section">
+        <div className="interviews-section">
           {hasPastConversations ? (
             userConversations?.map((conversation) => (
               <ConversationCard
