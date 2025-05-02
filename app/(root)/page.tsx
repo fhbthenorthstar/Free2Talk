@@ -27,11 +27,10 @@ async function Home() {
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>
-            Speak English Better - Free Practice & Feedback Sessions with AI
+            Speak English Better <br />
+            Free Practice & Feedback Sessions With AI Without Any Judgement.
           </h2>
-          <p className="text-lg">
-            Talk about daily life topics and improve your english.
-          </p>
+          <p className="text-lg">Talk about your everyday topics</p>
 
           <Button asChild className="btn-primary max-sm:w-full">
             <Link href="/conversation">Create Practise Sessions</Link>
