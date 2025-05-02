@@ -11,16 +11,24 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="root-layout">
-      <nav>
+      <nav className="flex items-center justify-between px-4 py-2 shadow">
+        {/* Left side: Logo and name */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/ai-avatar.webp"
+            src="/logo-main.png"
             alt="MockMate Logo"
             width={48}
             height={42}
           />
-          <h3 className="text-primary">MockGorilla</h3>
+          <h3 className="text-primary">Free2Talk</h3>
         </Link>
+
+        {/* Right side: User name and Logout */}
+        <div className="flex items-center gap-4">
+          <span className="text-gray-700">Hi, John</span>{" "}
+          {/* Replace "John" dynamically */}
+          <button className="text-red-500 hover:underline">Logout</button>
+        </div>
       </nav>
 
       {children}

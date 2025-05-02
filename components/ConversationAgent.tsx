@@ -172,7 +172,7 @@ const ConversationAgent = ({
         <div className="card-interviewer">
           <div className="avatar">
             <Image
-              src="/ai-avatar.webp"
+              src="/logo-main.png"
               alt="profile-image"
               width={65}
               height={54}
@@ -180,7 +180,7 @@ const ConversationAgent = ({
             />
             {isSpeaking && <span className="animate-speak" />}
           </div>
-          <h3>Free2Talk Agent</h3>
+          <h3>Lily - Free2Talk</h3>
         </div>
 
         {/* User Profile Card */}
